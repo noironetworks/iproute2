@@ -59,6 +59,11 @@ all: Config
 	for i in $(SUBDIRS); \
 	do echo; echo $$i; $(MAKE) $(MFLAGS) -C $$i; done
 
+libtc.so: Config
+	@set -e; \
+	echo; echo lib; $(MAKE) $(MFLAGS) -C lib; done
+	echo; echo tc; $(MAKE) $(MFLAGS) -C tc libtc.so; done
+
 Config:
 	sh configure $(KERNEL_INCLUDE)
 

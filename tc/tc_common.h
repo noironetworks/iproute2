@@ -25,3 +25,8 @@ extern int check_size_table_opts(struct tc_sizespec *s);
 
 extern int show_graph;
 extern bool use_names;
+
+extern void tc_usage(void);
+extern int tc_cmd(int argc, char **argv);
+extern void tc_init(void);
+extern void tc_exit(void);

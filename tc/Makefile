@@ -74,7 +74,7 @@ TCMODULES += q_clsact.o
 TCMODULES += e_bpf.o
 TCMODULES += f_matchall.o
 
-TCSO :=
+TCSO := libtc.so
 ifeq ($(TC_CONFIG_ATM),y)
   TCSO += q_atm.so
 endif
@@ -137,10 +137,14 @@ MODDESTDIR := $(DESTDIR)$(LIBDIR)/tc
 	$(QUIET_CC)$(CC) $(CFLAGS) $(LDFLAGS) -shared -fpic $< -o $@
 
 
-all: tc $(TCSO)
+all: tc $(TCSO) libtc.so
 
-tc: $(TCOBJ) $(LIBNETLINK) libtc.a
+tc: $(TCOBJ) $(LIBNETLINK) tc_main.o libtc.a
 	$(QUIET_LINK)$(CC) $^ $(LDFLAGS) $(LDLIBS) -o $@
+
+CFLAGS += -fpic
+libtc.so: $(TCOBJ) $(LIBNETLINK) libtc.a
+	$(QUIET_LINK)$(CC) $^ $(LDFLAGS) $(LDLIBS) -shared -fpic -o $@
 
 libtc.a: $(TCLIB)
 	$(QUIET_AR)$(AR) rcs $@ $^
